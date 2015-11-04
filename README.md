@@ -1,5 +1,5 @@
-PayFast BoxBilling Payment v1.0.0 for BoxBilling v3.6.* 
--------------------------------------------------------
+PayFast BoxBilling Payment v1.0.0 for BoxBilling v3.6.* - 4.*
+-------------------------------------------------------------
 Copyright (c) 2013 PayFast (Pty) Ltd
 
 LICENSE:

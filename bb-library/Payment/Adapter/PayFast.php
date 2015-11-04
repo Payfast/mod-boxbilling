@@ -51,6 +51,11 @@ class Payment_Adapter_PayFast
                             'label' => 'PayFast merchant key for payments'
                     ),
                 ),
+                'passphrase' => array('text', array(
+                    'label' => 'PayFast Passphrase: only enter a passphrase if it is set on your PayFast account.',
+                    'required' => false,
+                    ),
+                ),
                 'debug' => array('select', array(
                             'multiOptions' => array(
                                 '0' => 'Off',
@@ -75,9 +80,8 @@ class Payment_Adapter_PayFast
         );
         $title = __('Payment for invoice :serie:id [:title]', $p);
         $number = $invoice['nr'];
-        
 
-            $data = array();         
+        $data = array();
         
         if($this->config['test_mode']) 
         {
@@ -93,24 +97,31 @@ class Payment_Adapter_PayFast
             $data['merchant_key'] = $this->config['merchantKey'];
         }
 
-
             $data['return_url']      = $this->config['return_url'];
             $data['cancel_url']      = $this->config['cancel_url'];
             $data['notify_url']      = $this->config['notify_url'];
             $data['m_payment_id']    = $number;
             $data['amount']          = $this->moneyFormat($invoice['total'], $invoice['currency']);
             $data['item_name']       = $title;
-            
+
+
         $pfOutput = '';
-        foreach( $data as $k=>$v )
+        // Create output string
+        foreach( $data as $key => $val )
+            $pfOutput .= $key .'='. urlencode( trim( $val ) ) .'&';
+
+        $passPhrase = $this->config['passphrase'];
+        if( empty( $passPhrase ) || ( $this->config['test_mode'] ) )
         {
-            $pfOutput .= $k .'='. urlencode( $v ) .'&';
-        }            
-    
-        // Remove last ampersand
-        $pfOutput = substr( $pfOutput, 0, -1 );
+            $pfOutput = substr( $pfOutput, 0, -1 );
+        }
+        else
+        {
+            $pfOutput = $pfOutput."passphrase=".urlencode( $passPhrase );
+        }
 
         $data['signature'] = md5( $pfOutput );
+        $data['user_agent'] = 'BoxBilling 4.x';
 
         $form = '<form name="payment_form" action="'.$url.'" method="post">' . PHP_EOL;
         foreach($data as $key => $value) 
@@ -234,7 +245,7 @@ class Payment_Adapter_PayFast
          * 
          * @author Jonathan Smit
          */
-        function pfValidSignature( $pfData = null, &$pfParamString = null )
+        function pfValidSignature( $pfData = null, &$pfParamString = null, $passPhrase = null )
         {
             // Dump the submitted variables and calculate security signature
             foreach( $pfData as $key => $val )
@@ -251,7 +262,16 @@ class Payment_Adapter_PayFast
 
             // Remove the last '&' from the parameter string
             $pfParamString = substr( $pfParamString, 0, -1 );
-            $signature = md5( $pfParamString );
+            if( is_null( $passPhrase ) || ( $this->config['test_mode'] ) )
+            {
+                $tempParamString = $pfParamString;
+            }
+            else
+            {
+                $tempParamString = $pfParamString."&passphrase=".urlencode( $passPhrase );
+            }
+
+            $signature = md5( $tempParamString );
             
             $result = ( $pfData['signature'] == $signature );
 
@@ -504,7 +524,7 @@ class Payment_Adapter_PayFast
         //// Check data against internal order
         if( !$pfError && !$pfDone )
         {
-           // pflog( 'Check data against internal order' );
+            pflog( 'Check data against internal order' );
     
             // Check order amount
             if( !pfAmountsEqual( $pfData['amount_gross'], number_format($invoice['total'],2) ) )
@@ -557,13 +577,13 @@ class Payment_Adapter_PayFast
         // If an error occurred
         if( $pfError )
         {
-            pflog( 'Error occurred: '. $pfErrMsg );            
+            pflog( 'Error occurred: '. $pfErrMsg );
             throw new Exception( 'ITN is not valid: '.$pfErrMsg );
         }
         
         $d = array(
             'id'        => $id, 
-            'error'     => '',
+        //    'error'     => '',
             'error_code'=> '',
             'status'    => 'processed',
             'updated_at'=> date('c'),
