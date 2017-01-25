@@ -85,13 +85,13 @@ class Payment_Adapter_PayFast
 
         if($this->config['test_mode'])
         {
-            $url = 'https://sandbox.payfast.local/eng/process';
+            $url = 'https://sandbox.payfast.co.za/eng/process';
             $data['merchant_id'] = self::SANDBOX_MERCHANT_ID;
             $data['merchant_key'] = self::SANDBOX_MERCHANT_KEY;
         }
         else
         {
-            $url = 'https://www.payfast.local/eng/process';
+            $url = 'https://www.payfast.co.za/eng/process';
 
             $data['merchant_id'] = $this->config['merchantId'];
             $data['merchant_key'] = $this->config['merchantKey'];
@@ -149,7 +149,7 @@ class Payment_Adapter_PayFast
         define( 'PF_SOFTWARE_NAME', 'BoxBilling' );
         define( 'PF_SOFTWARE_VER', $result['bb']['version'] );
         define( 'PF_MODULE_NAME', 'PayFast-BoxBilling' );
-        define( 'PF_MODULE_VER', '1.0.0' );
+        define( 'PF_MODULE_VER', '1.1.2' );
 
         // Features
         // - PHP

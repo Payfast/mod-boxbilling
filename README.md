@@ -1,4 +1,4 @@
-PayFast BoxBilling Payment v1.0.0 for BoxBilling v3.6.* and v1.1.0 for BoxBilling 4.*
+PayFast BoxBilling Payment v1.1.2 for BoxBilling v3.6.* and v1.1.2 for BoxBilling 4.*
 -------------------------------------------------------------------------------------
 Copyright (c) 2013 - 2016 PayFast (Pty) Ltd
 
