@@ -287,7 +287,7 @@ class Payment_Adapter_PayFast
          * @param $pfHost String Hostname to use
          * @param $pfParamString String
          */
-        function pfValidData( $pfHost = 'www.payfast.local', $pfParamString = '' )
+        function pfValidData( $pfHost = 'www.payfast.co.za', $pfParamString = '' )
         {
             pflog( 'Host = '. $pfHost );
             pflog( 'Params = '. $pfParamString );
@@ -383,8 +383,8 @@ class Payment_Adapter_PayFast
         {
             // Variable initialization
             $validHosts = array(
-                'www.payfast.local',
-                'sandbox.payfast.local',
+                'www.payfast.co.za',
+                'sandbox.payfast.co.za',
                 'w1w.payfast.co.za',
                 'w2w.payfast.co.za',
             );
@@ -478,7 +478,7 @@ class Payment_Adapter_PayFast
         $client_id = $invoice['client']['id'];
 
 
-        $pfHost = ( $this->config['test_mode'] ? 'sandbox' : 'www' ) . '.payfast.local';
+        $pfHost = ( $this->config['test_mode'] ? 'sandbox' : 'www' ) . '.payfast.co.za';
 
         pflog( 'PayFast ITN call received' );
 
