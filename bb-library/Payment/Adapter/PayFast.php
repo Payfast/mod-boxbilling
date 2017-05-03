@@ -2,17 +2,9 @@
 /**
  * BoxBilling
  *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file LICENSE.txt
- * It is also available through the world-wide-web at this URL:
- * http://www.boxbilling.com/LICENSE.txt
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@boxbilling.com so we can send you a copy immediately.
- *
- * @copyright Copyright (c) 2010-2012 BoxBilling (http://www.boxbilling.com)
+ * Copyright (c) 2008 PayFast (Pty) Ltd
+ * You (being anyone who is not PayFast (Pty) Ltd) may download and use this plugin / code in your own website in conjunction with a registered and active PayFast account. If your PayFast account is terminated for any reason, you may not use this plugin / code or part thereof.
+ * Except as expressly indicated in this licence, you may not use, copy, modify or distribute this plugin / code or part thereof in any way.
  * @license   http://www.boxbilling.com/LICENSE.txt
  * @version   $Id$
  */
