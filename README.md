@@ -15,10 +15,10 @@ INTEGRATION:
 7. You are now ready to start accepting live transactions through PayFast!
 
 ************************************************************************
-*                                                                      *
-* Please see the URL below for all information concerning this module: *
-*                                                                      *
-*           https://www.payfast.co.za/shopping-carts/boxbilling/       *
-*                                                                      *
+
+ Please see the URL below for all information concerning this module:
+
+           https://www.payfast.co.za/shopping-carts/boxbilling/
+
 ************************************************************************
 
