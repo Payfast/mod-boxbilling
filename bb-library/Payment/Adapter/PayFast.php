@@ -75,7 +75,7 @@ class Payment_Adapter_PayFast
 
         $data = array();
 
-        if($this->config['test_mode'])
+        if($this->config['test_mode'] && (!isset($this->config['merchantId']) || !isset($this->config['merchantKey']) ) )
         {
             $url = 'https://sandbox.payfast.co.za/eng/process';
             $data['merchant_id'] = self::SANDBOX_MERCHANT_ID;
@@ -95,6 +95,7 @@ class Payment_Adapter_PayFast
         $data['m_payment_id']    = $number;
         $data['amount']          = $this->moneyFormat($invoice['total'], $invoice['currency']);
         $data['item_name']       = $title;
+        $data['custom_str1']     = PF_MODULE_NAME . '_' . PF_MODULE_VER;
 
 
         $pfOutput = '';
@@ -103,7 +104,7 @@ class Payment_Adapter_PayFast
             $pfOutput .= $key .'='. urlencode( trim( $val ) ) .'&';
 
         $passPhrase = $this->config['passphrase'];
-        if( empty( $passPhrase ) || ( $this->config['test_mode'] ) )
+        if( empty( $passPhrase ))
         {
             $pfOutput = substr( $pfOutput, 0, -1 );
         }
@@ -140,7 +141,7 @@ class Payment_Adapter_PayFast
 
         define( 'PF_SOFTWARE_NAME', 'BoxBilling' );
         define( 'PF_SOFTWARE_VER', $result['bb']['version'] );
-        define( 'PF_MODULE_NAME', 'PayFast-BoxBilling' );
+        define( 'PF_MODULE_NAME', 'PayFast_BoxBilling' );
         define( 'PF_MODULE_VER', '1.1.2' );
 
         // Features
@@ -155,10 +156,9 @@ class Payment_Adapter_PayFast
             $pfFeatures .= ' curl '. $pfVersion['version'] .';';
         }
         else
+        {
             $pfFeatures .= ' nocurl;';
-
-        // Create user agrent
-        define( 'PF_USER_AGENT', PF_SOFTWARE_NAME .'/'. PF_SOFTWARE_VER .' ('. trim( $pfFeatures ) .') '. PF_MODULE_NAME .'/'. PF_MODULE_VER );
+        }
 
         // General Defines
         define( 'PF_TIMEOUT', 15 );
@@ -295,7 +295,6 @@ class Payment_Adapter_PayFast
 
                 // Set cURL options - Use curl_setopt for freater PHP compatibility
                 // Base settings
-                curl_setopt( $ch, CURLOPT_USERAGENT, PF_USER_AGENT );  // Set user agent
                 curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );      // Return output as string rather than outputting it
                 curl_setopt( $ch, CURLOPT_HEADER, false );             // Don't include header in output
                 curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
@@ -360,43 +359,6 @@ class Payment_Adapter_PayFast
             $verifyResult = trim( $lines[0] );
 
             if( strcasecmp( $verifyResult, 'VALID' ) == 0 )
-                return( true );
-            else
-                return( false );
-        }
-
-        /**
-         * pfValidIP
-         *
-         * @author Jonathan Smit
-         * @param $sourceIP String Source IP address
-         */
-        function pfValidIP( $sourceIP )
-        {
-            // Variable initialization
-            $validHosts = array(
-                'www.payfast.co.za',
-                'sandbox.payfast.co.za',
-                'w1w.payfast.co.za',
-                'w2w.payfast.co.za',
-            );
-
-            $validIps = array();
-
-            foreach( $validHosts as $pfHostname )
-            {
-                $ips = gethostbynamel( $pfHostname );
-
-                if( $ips !== false )
-                    $validIps = array_merge( $validIps, $ips );
-            }
-
-            // Remove duplicates
-            $validIps = array_unique( $validIps );
-
-            pflog( "Valid IPs:\n". print_r( $validIps, true ) );
-
-            if( in_array( $sourceIP, $validIps ) )
                 return( true );
             else
                 return( false );
@@ -487,18 +449,6 @@ class Payment_Adapter_PayFast
             {
                 $pfError = true;
                 $pfErrMsg = PF_ERR_INVALID_SIGNATURE;
-            }
-        }
-
-        //// Verify source IP (If not in debug mode)
-        if( !$pfError && !$pfDone )
-        {
-            pflog( 'Verify source IP' );
-
-            if( !pfValidIP( $_SERVER['REMOTE_ADDR'] ) )
-            {
-                $pfError = true;
-                $pfErrMsg = PF_ERR_BAD_SOURCE_IP;
             }
         }
 
