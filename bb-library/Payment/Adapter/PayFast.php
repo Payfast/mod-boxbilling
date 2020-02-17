@@ -62,6 +62,9 @@ class Payment_Adapter_PayFast
 
     public function getHtml($api_admin, $invoice_id, $subscription)
     {
+        define( 'PF_MODULE_NAME', 'PayFast_BoxBilling' );
+        define( 'PF_MODULE_VER', '1.1.2' );
+
         $invoice = $api_admin->invoice_get(array('id'=>$invoice_id));
         $buyer = $invoice['buyer'];
 
@@ -85,8 +88,8 @@ class Payment_Adapter_PayFast
         {
             $url = 'https://www.payfast.co.za/eng/process';
 
-            $data['merchant_id'] = $this->config['merchantId'];
-            $data['merchant_key'] = $this->config['merchantKey'];
+            $data['merchant_id'] = trim($this->config['merchantId']);
+            $data['merchant_key'] = trim($this->config['merchantKey']);
         }
 
         $data['return_url']      = $this->config['return_url'];
@@ -95,7 +98,7 @@ class Payment_Adapter_PayFast
         $data['m_payment_id']    = $number;
         $data['amount']          = $this->moneyFormat($invoice['total'], $invoice['currency']);
         $data['item_name']       = $title;
-        $data['custom_str1']     = PF_MODULE_NAME . '_' . PF_MODULE_VER;
+        $data['custom_str1']     = PF_MODULE_NAME . '_' . PF_SOFTWARE_VER . '_' . PF_MODULE_VER;
 
 
         $pfOutput = '';
@@ -103,7 +106,7 @@ class Payment_Adapter_PayFast
         foreach( $data as $key => $val )
             $pfOutput .= $key .'='. urlencode( trim( $val ) ) .'&';
 
-        $passPhrase = $this->config['passphrase'];
+        $passPhrase = trim($this->config['passphrase']);
         if( empty( $passPhrase ))
         {
             $pfOutput = substr( $pfOutput, 0, -1 );
@@ -114,7 +117,6 @@ class Payment_Adapter_PayFast
         }
 
         $data['signature'] = md5( $pfOutput );
-        $data['user_agent'] = 'BoxBilling 4.x';
 
         $form = '<form name="payment_form" action="'.$url.'" method="post">' . PHP_EOL;
         foreach($data as $key => $value)
@@ -141,8 +143,6 @@ class Payment_Adapter_PayFast
 
         define( 'PF_SOFTWARE_NAME', 'BoxBilling' );
         define( 'PF_SOFTWARE_VER', $result['bb']['version'] );
-        define( 'PF_MODULE_NAME', 'PayFast_BoxBilling' );
-        define( 'PF_MODULE_VER', '1.1.2' );
 
         // Features
         // - PHP
@@ -321,7 +321,6 @@ class Payment_Adapter_PayFast
                 // Construct Header
                 $header = "POST /eng/query/validate HTTP/1.0\r\n";
                 $header .= "Host: ". $pfHost ."\r\n";
-                $header .= "User-Agent: ". PF_USER_AGENT ."\r\n";
                 $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
                 $header .= "Content-Length: " . strlen( $pfParamString ) . "\r\n\r\n";
 
@@ -441,7 +440,7 @@ class Payment_Adapter_PayFast
         {
             pflog( 'Verify security signature' );
 
-            $passPhrase = $this->config['passphrase'];
+            $passPhrase = trim( $this->config['passphrase'] );
             $pfPassPhrase = is_null( $passPhrase ) || $this->config['test_mode'] ? null : $passPhrase;
 
             // If signature different, log for debugging
