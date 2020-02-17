@@ -64,7 +64,7 @@ class Payment_Adapter_PayFast
     {
         define( 'PF_MODULE_NAME', 'PayFast_BoxBilling' );
         define( 'PF_MODULE_VER', '1.1.2' );
-
+        
         $invoice = $api_admin->invoice_get(array('id'=>$invoice_id));
         $buyer = $invoice['buyer'];
 
