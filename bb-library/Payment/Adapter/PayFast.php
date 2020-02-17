@@ -62,6 +62,8 @@ class Payment_Adapter_PayFast
 
     public function getHtml($api_admin, $invoice_id, $subscription)
     {
+        $result = $api_admin->system_env();
+        define( 'PF_SOFTWARE_VER', $result['bb']['version'] );
         define( 'PF_MODULE_NAME', 'PayFast_BoxBilling' );
         define( 'PF_MODULE_VER', '1.1.2' );
         
@@ -138,11 +140,8 @@ class Payment_Adapter_PayFast
     public function processTransaction($api_admin, $id, $data, $gateway_id)
     {
         $result = $api_admin->system_env();
-
         define( 'PF_DEBUG', $this->config['debug'] );
-
         define( 'PF_SOFTWARE_NAME', 'BoxBilling' );
-        define( 'PF_SOFTWARE_VER', $result['bb']['version'] );
 
         // Features
         // - PHP
