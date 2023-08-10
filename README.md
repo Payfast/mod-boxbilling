@@ -14,11 +14,4 @@ INTEGRATION:
 6. Goto: Configuration -> Payment gateways -> Edit PayFast and change the ‘Enable Test Mode’ to off, click update.
 7. You are now ready to start accepting live transactions through PayFast!
 
-************************************************************************
-
- Please see the URL below for all information concerning this module:
-
-           https://www.payfast.co.za/shopping-carts/boxbilling/
-
-************************************************************************
-
+Please [click here](https://payfast.io/integration/shopping-carts/boxbilling/) for more information concerning this module.
