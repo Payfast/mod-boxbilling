@@ -1,5 +1,9 @@
 # mod-boxbilling
 
+## This plugin is deprecated
+
+**This repository is no longer supported and has been archived.**
+
 ## Payfast BoxBilling Payment v1.2.0 for BoxBilling v4.22.1.5
 
 This is the Payfast module for BoxBilling. Please feel free
