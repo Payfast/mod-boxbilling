@@ -1,19 +1,22 @@
 # mod-boxbilling
 
-PayFast BoxBilling Payment v1.1.2 for BoxBilling v3.6.* and v1.1.2 for BoxBilling 4.*
+## Payfast BoxBilling Payment v1.2.0 for BoxBilling v4.22.1.5
 
-Copyright (c) 2008 PayFast (Pty) Ltd
-You (being anyone who is not PayFast (Pty) Ltd) may download and use this plugin / code in your own website in conjunction with a registered and active PayFast account. If your PayFast account is terminated for any reason, you may not use this plugin / code or part thereof.
-Except as expressly indicated in this licence, you may not use, copy, modify or distribute this plugin / code or part thereof in any way.
+This is the Payfast module for BoxBilling. Please feel free
+to [contact the Payfast support team](https://payfast.io/contact/) should you require any assistance.
 
-INTEGRATION:
-1. Download the BoxBilling PayFast files from GitHub, unzip it to your computer and upload the files to the root installation of your BoxBilling installation.
-[root]/ bb-library/Payment/Adapter/PayFast.php
-2. Go to: Configuration -> Payment gateways -> New Payment gateway -> Install PayFast
-3. Select Edit PayFast button, complete the configuration accordingly, and set debugging on, enable the payment option and enable the test mode. Select the ZAR currency that you created in step 2. Now update the PayFast payment option.
-4. You are now ready to complete a test transaction through the sandbox testing environment.
-5. Once you’ve completed a test transaction. Go back to the BoxBilling admin area.
-6. Goto: Configuration -> Payment gateways -> Edit PayFast and change the ‘Enable Test Mode’ to off, click update.
-7. You are now ready to start accepting live transactions through PayFast!
+## Installation
 
-Please [click here](https://payfast.io/integration/shopping-carts/boxbilling/) for more information concerning this module.
+1. Unzip the module to a temporary location on your computer.
+2. Copy the **bb-library** folder in the archive to your base **BoxBilling** installation.
+    - This should NOT overwrite any existing files or folders and merely supplement them with the Payfast files.
+    - This is, however, dependent on the FTP program you use.
+3. Navigate to **Configuration** -> **Payment gateways** -> **New Payment gateway** -> **Install Payfast**
+4. Select the **Edit Payfast** button, enter your preferred configuration and click **Update**.
+5. The module is now ready for use.
+
+Please [click here](https://payfast.io/integration/plugins/boxbilling/) for more information concerning this module.
+
+## Collaboration
+
+Please submit pull requests with any tweaks, features or fixes you would like to share.
